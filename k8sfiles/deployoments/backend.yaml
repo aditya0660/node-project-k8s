@@ -1,0 +1,32 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: backend-deployment
+  namespace: prod
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: backend
+  strategy:
+    type: RollingUpdate
+    rollingUpdate:
+      maxSurge: 1
+      maxUnavailable: 0
+  template:
+    metadata:
+      labels:
+        app: backend
+    spec:
+      containers:
+      - name: backend
+        image: 041430812647.dkr.ecr.ap-south-1.amazonaws.com/prutor/cache:latest
+        ports:
+        - containerPort: 80
+        resources:   # Add the resource limits and requests here
+            limits:
+              cpu: "4"   # The maximum CPU the container can use
+              memory: "8Gi"   # The maximum memory the container can use
+            requests:
+              cpu: "2"   # The minimum CPU required by the container
+              memory: "4Gi"   # The minimum memory required by the container
